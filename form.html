@@ -689,6 +689,57 @@ hr.divider { border: none; border-top: 1px solid var(--border); margin: 20px 0; 
 }
 @keyframes spin { to { transform: rotate(360deg); } }
 
+
+/* INFO TOOLTIP */
+.info-tooltip {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  cursor: pointer;
+}
+.info-icon {
+  width: 17px; height: 17px;
+  border-radius: 50%;
+  background: var(--ink3);
+  color: white;
+  font-size: 11px;
+  font-weight: 700;
+  font-style: italic;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+  font-family: 'Sora', serif;
+  transition: background 0.15s;
+  user-select: none;
+}
+.info-tooltip:hover .info-icon,
+.info-tooltip:focus .info-icon { background: var(--accent); }
+.info-popover {
+  display: none;
+  position: absolute;
+  left: 24px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: var(--ink);
+  color: white;
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 1.5;
+  border-radius: 10px;
+  padding: 10px 14px;
+  width: 260px;
+  z-index: 200;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.18);
+  pointer-events: none;
+  font-family: 'Inter', sans-serif;
+  letter-spacing: 0;
+  text-transform: none;
+}
+.info-tooltip:hover .info-popover,
+.info-tooltip:focus .info-popover { display: block; }
+@media (max-width: 520px) {
+  .info-popover { left: auto; right: 0; top: 24px; transform: none; }
+}
+
 </style>
 </head>
 <body>
@@ -1210,27 +1261,32 @@ hr.divider { border: none; border-top: 1px solid var(--border); margin: 20px 0; 
   <div class="panel-hero">
       <div class="panel-tag"><span class="tag-dot"></span> Paso 6 de 6 · Último paso 🎉</div>
       <h2>Documentos e<br><em>info adicional</em></h2>
-      <p>Cualquier material extra que ayude a entrenar mejor el bot. Podés subir archivos o pegar links.</p>
+      <p>Cualquier material extra que ayude a entrenar mejor el bot. Podés compartir links de Drive o páginas web.</p>
     </div>
 
     <div class="card">
       <div class="card-header">
         <div class="card-icon icon-gray">📁</div>
         <div>
-          <div class="card-title">Subí tus archivos</div>
-          <div class="card-subtitle">PDF, Word, Excel, imágenes — lo que tengas</div>
+          <div class="card-title">Archivos e información</div>
+          <div class="card-subtitle">Catálogos, listas de precios, manuales — lo que tengas</div>
         </div>
       </div>
       <div class="card-body">
         <div class="field">
-          <div class="info-box" style="margin-bottom:0;">
-            📎 <strong>¿Tenés archivos para compartir?</strong><br>
-            Envianos tus catálogos, listas de precios, manuales o cualquier documento útil directamente a <strong>hola@owibot.com</strong> con el asunto <em>"Archivos chatbot – [nombre de tu empresa]"</em> después de enviar este formulario.
-          </div>
+          <label style="display:flex;align-items:center;gap:8px;">
+            Link de archivos
+            <span class="info-tooltip" tabindex="0">
+              <span class="info-icon">i</span>
+              <span class="info-popover">Subí tus archivos (PDF, Excel, Word, imágenes) a Google Drive o Dropbox, compartílos como "Cualquier persona con el link puede ver" y pegá el link acá.</span>
+            </span>
+          </label>
+          <input type="url" name="links_archivos" placeholder="Ej: https://drive.google.com/drive/folders/...">
+          <div class="field-hint">Si tenés varios archivos, subílos a una carpeta de Google Drive y compartí el link de la carpeta.</div>
         </div>
         <div class="field">
-          <label>Links con información relevante</label>
-          <textarea name="links_info" placeholder="Ej: https://tuempresa.com/servicios&#10;https://docs.google.com/spreadsheets/...&#10;https://drive.google.com/file/..."></textarea>
+          <label>Links de páginas con información relevante</label>
+          <textarea name="links_info" placeholder="Ej: https://tuempresa.com/servicios&#10;https://docs.google.com/spreadsheets/..."></textarea>
           <div class="field-hint">Páginas de tu web, catálogos online, Google Sheets con precios, etc.</div>
         </div>
       </div>
