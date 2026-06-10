@@ -1311,7 +1311,7 @@ hr.divider { border: none; border-top: 1px solid var(--border); margin: 20px 0; 
 
 <script>
 // ===== CONFIG FORMSPREE =====
-const FORMSPREE_ID = 'YOUR_FORMSPREE_ID'; // Reemplazá con tu ID de Formspree
+const FORMSPREE_ID = 'mvznbogb';
 
 function startForm() {
   document.getElementById('intro-screen').style.display = 'none';
@@ -1591,6 +1591,7 @@ async function submitForm() {
   // Format as readable email body
   const emailData = {
     _subject: `Nuevo onboarding chatbot: ${data.empresa_nombre || 'Sin nombre'}`,
+    _cc: 'ndelreal@owibot.com,mcolman@owibot.com',
     _replyto: data.contacto_email || '',
     ...data
   };
