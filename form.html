@@ -1651,7 +1651,7 @@ async function submitForm() {
   const prettyData = {
     _subject: `Nuevo onboarding chatbot — ${rawData.empresa_nombre || 'Sin nombre'}`,
     _replyto: rawData.contacto_email || '',
-    _cc: 'ndelreal@owibot.com,mcolman@owibot.com',
+
   };
 
   Object.entries(rawData).forEach(([key, val]) => {
