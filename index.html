@@ -631,6 +631,64 @@ hr.divider { border: none; border-top: 1px solid var(--border); margin: 20px 0; 
   font-size: 12px;
   color: var(--ink3);
 }
+
+/* VALIDATION ERRORS */
+.field-error input,
+.field-error select,
+.field-error textarea {
+  border-color: #EF4444 !important;
+  background: #FFF5F5 !important;
+  box-shadow: 0 0 0 3px rgba(239,68,68,0.12) !important;
+}
+.field-error-msg {
+  font-size: 12px;
+  color: #DC2626;
+  margin-top: 5px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.error-banner {
+  background: #FEF2F2;
+  border: 1px solid #FECACA;
+  border-radius: var(--radius);
+  padding: 12px 16px;
+  color: #B91C1C;
+  font-size: 13px;
+  font-weight: 500;
+  margin-bottom: 20px;
+  display: none;
+  align-items: center;
+  gap: 8px;
+  line-height: 1.5;
+}
+.error-banner.show { display: flex; }
+.option-grid-error {
+  border: 1.5px solid #EF4444;
+  border-radius: var(--radius);
+  padding: 8px;
+  background: #FFF5F5;
+}
+
+/* SUBMIT LOADING */
+.btn-next.loading, .btn-submit-final.loading {
+  opacity: 0.7;
+  pointer-events: none;
+  cursor: not-allowed;
+}
+.btn-next.loading::after, .btn-submit-final.loading::after {
+  content: '';
+  display: inline-block;
+  width: 14px; height: 14px;
+  border: 2px solid rgba(255,255,255,0.4);
+  border-top-color: white;
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+  margin-left: 8px;
+  vertical-align: middle;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
 </style>
 </head>
 <body>
@@ -736,7 +794,8 @@ hr.divider { border: none; border-top: 1px solid var(--border); margin: 20px 0; 
 
   <!-- ===== PASO 1: EMPRESA ===== -->
   <div class="step-panel active" id="panel-0">
-    <div class="panel-hero">
+    <div class="error-banner" id="error-banner-panel-0">⚠️ <span id="error-text-panel-0">Por favor completá todos los campos obligatorios antes de continuar.</span></div>
+  <div class="panel-hero">
       <div class="panel-tag"><span class="tag-dot"></span> Paso 1 de 6</div>
       <h2>Contanos sobre<br><em>tu empresa</em></h2>
       <p>Lo básico para que el bot sepa de quién habla y pueda presentarse correctamente.</p>
@@ -828,7 +887,8 @@ hr.divider { border: none; border-top: 1px solid var(--border); margin: 20px 0; 
 
   <!-- ===== PASO 2: PERSONALIDAD DEL BOT ===== -->
   <div class="step-panel" id="panel-1">
-    <div class="panel-hero">
+    <div class="error-banner" id="error-banner-panel-1">⚠️ <span id="error-text-panel-1">Por favor completá todos los campos obligatorios antes de continuar.</span></div>
+  <div class="panel-hero">
       <div class="panel-tag"><span class="tag-dot"></span> Paso 2 de 6</div>
       <h2>Personalidad<br><em>del bot</em></h2>
       <p>Cómo querés que hable, cómo se llama y qué dice cuando arranca una conversación.</p>
@@ -920,7 +980,7 @@ hr.divider { border: none; border-top: 1px solid var(--border); margin: 20px 0; 
         </div>
         <div class="field">
           <label>¿Qué temas puede cubrir el bot? (marcá los que aplican)</label>
-          <div class="option-grid">
+          <div class="option-grid" id="acciones-grid">
             <label class="option-card"><input type="checkbox" name="accion_info"> Info de productos/servicios</label>
             <label class="option-card"><input type="checkbox" name="accion_turno"> Turnos / Reservas</label>
             <label class="option-card"><input type="checkbox" name="accion_presupuesto"> Presupuestos</label>
@@ -938,7 +998,8 @@ hr.divider { border: none; border-top: 1px solid var(--border); margin: 20px 0; 
 
   <!-- ===== PASO 3: FLUJO ===== -->
   <div class="step-panel" id="panel-2">
-    <div class="panel-hero">
+    <div class="error-banner" id="error-banner-panel-2">⚠️ <span id="error-text-panel-2">Por favor completá todos los campos obligatorios antes de continuar.</span></div>
+  <div class="panel-hero">
       <div class="panel-tag"><span class="tag-dot"></span> Paso 3 de 6</div>
       <h2>El camino<br><em>de la conversación</em></h2>
       <p>Describí el flujo que sigue el bot con cada cliente: desde el saludo hasta la resolución o derivación.</p>
@@ -1011,7 +1072,8 @@ hr.divider { border: none; border-top: 1px solid var(--border); margin: 20px 0; 
 
   <!-- ===== PASO 4: DERIVACIÓN ===== -->
   <div class="step-panel" id="panel-3">
-    <div class="panel-hero">
+    <div class="error-banner" id="error-banner-panel-3">⚠️ <span id="error-text-panel-3">Por favor completá todos los campos obligatorios antes de continuar.</span></div>
+  <div class="panel-hero">
       <div class="panel-tag"><span class="tag-dot"></span> Paso 4 de 6</div>
       <h2>¿Cuándo pasa<br><em>a un operador?</em></h2>
       <p>Definí en qué casos el bot tiene que derivar la conversación a una persona real.</p>
@@ -1033,7 +1095,7 @@ hr.divider { border: none; border-top: 1px solid var(--border); margin: 20px 0; 
       <div class="card-body">
         <div class="field">
           <label>Marcá las situaciones que aplican <span class="req">*</span></label>
-          <div class="option-grid">
+          <div class="option-grid" id="deriv-grid">
             <label class="option-card"><input type="checkbox" name="deriv_solicita"> Cuando el cliente lo pide</label>
             <label class="option-card"><input type="checkbox" name="deriv_noresponde"> Cuando el bot no puede responder</label>
             <label class="option-card"><input type="checkbox" name="deriv_reclamo"> Ante reclamos o quejas</label>
@@ -1088,7 +1150,8 @@ hr.divider { border: none; border-top: 1px solid var(--border); margin: 20px 0; 
 
   <!-- ===== PASO 5: PREGUNTAS FRECUENTES ===== -->
   <div class="step-panel" id="panel-4">
-    <div class="panel-hero">
+    <div class="error-banner" id="error-banner-panel-4">⚠️ <span id="error-text-panel-4">Por favor completá todos los campos obligatorios antes de continuar.</span></div>
+  <div class="panel-hero">
       <div class="panel-tag"><span class="tag-dot"></span> Paso 5 de 6</div>
       <h2>Preguntas<br><em>frecuentes</em></h2>
       <p>Las consultas que más te hacen tus clientes y las respuestas exactas que debería dar el bot.</p>
@@ -1143,7 +1206,8 @@ hr.divider { border: none; border-top: 1px solid var(--border); margin: 20px 0; 
 
   <!-- ===== PASO 6: ARCHIVOS ===== -->
   <div class="step-panel" id="panel-5">
-    <div class="panel-hero">
+    <div class="error-banner" id="error-banner-panel-5">⚠️ <span id="error-text-panel-5">Por favor completá todos los campos obligatorios antes de continuar.</span></div>
+  <div class="panel-hero">
       <div class="panel-tag"><span class="tag-dot"></span> Paso 6 de 6 · Último paso 🎉</div>
       <h2>Documentos e<br><em>info adicional</em></h2>
       <p>Cualquier material extra que ayude a entrenar mejor el bot. Podés subir archivos o pegar links.</p>
@@ -1246,6 +1310,9 @@ hr.divider { border: none; border-top: 1px solid var(--border); margin: 20px 0; 
 </footer>
 
 <script>
+// ===== CONFIG FORMSPREE =====
+const FORMSPREE_ID = 'YOUR_FORMSPREE_ID'; // Reemplazá con tu ID de Formspree
+
 function startForm() {
   document.getElementById('intro-screen').style.display = 'none';
   document.getElementById('stepper-wrap').style.display = 'block';
@@ -1254,7 +1321,6 @@ function startForm() {
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
-// Robot img already set
 window.addEventListener('DOMContentLoaded', function() {});
 
 const TOTAL = 6;
@@ -1268,6 +1334,157 @@ const btnBack = document.getElementById('btn-back');
 const btnNext = document.getElementById('btn-next');
 const headerCounter = document.getElementById('header-counter');
 const stepProgressText = document.getElementById('step-progress-text');
+
+// ===== VALIDATION CONFIG =====
+const VALIDATION = {
+  0: {
+    fields: [
+      { name: 'empresa_nombre', label: 'Nombre de la empresa' },
+      { name: 'empresa_descripcion', label: 'Descripción del negocio' },
+      { name: 'empresa_servicios', label: 'Productos / Servicios' },
+      { name: 'empresa_horarios', label: 'Horarios de atención' },
+      { name: 'empresa_ubicacion', label: 'Ciudad / Zona' },
+    ],
+    selects: [
+      { name: 'empresa_rubro', label: 'Rubro' }
+    ]
+  },
+  1: {
+    fields: [
+      { name: 'bot_nombre', label: 'Nombre del bot' },
+      { name: 'bot_publico', label: 'Público objetivo' },
+    ],
+    checkboxGroups: [
+      { names: ['accion_info','accion_turno','accion_presupuesto','accion_pedido','accion_pago','accion_reclamo','accion_catalogo','accion_novedades'], label: 'Temas del bot (al menos uno)', gridId: 'acciones-grid' }
+    ]
+  },
+  2: {
+    fields: [
+      { name: 'flujo_saludo', label: 'Paso 1: Saludo e identificación' },
+      { name: 'flujo_identificar', label: 'Paso 2: Identificar la consulta' },
+      { name: 'flujo_resolver', label: 'Paso 3: Resolver la consulta' },
+      { name: 'flujo_cierre', label: 'Paso 4: Cierre o derivación' },
+    ]
+  },
+  3: {
+    fields: [
+      { name: 'deriv_canal', label: 'Canal de derivación' },
+      { name: 'deriv_horarios', label: 'Horario de operadores' },
+    ],
+    checkboxGroups: [
+      { names: ['deriv_solicita','deriv_noresponde','deriv_reclamo','deriv_presup_alto','deriv_pago','deriv_urgencia','deriv_negociacion','deriv_3intentos'], label: 'Casos de derivación (al menos uno)', gridId: 'deriv-grid' }
+    ]
+  },
+  4: {
+    faqCheck: true
+  },
+  5: {
+    fields: [
+      { name: 'contacto_nombre', label: 'Tu nombre' },
+      { name: 'contacto_email', label: 'Tu email', email: true },
+    ]
+  }
+};
+
+function validateStep(stepIndex) {
+  const config = VALIDATION[stepIndex];
+  const panel = document.getElementById('panel-' + stepIndex);
+  const errors = [];
+
+  // Clear previous errors
+  panel.querySelectorAll('.field-error').forEach(el => el.classList.remove('field-error'));
+  panel.querySelectorAll('.field-error-msg').forEach(el => el.remove());
+  panel.querySelectorAll('.option-grid-error').forEach(el => el.classList.remove('option-grid-error'));
+
+  if (!config) return true;
+
+  // Validate text/textarea fields
+  if (config.fields) {
+    config.fields.forEach(({ name, label, email }) => {
+      const el = panel.querySelector(`[name="${name}"]`);
+      if (!el) return;
+      const val = el.value.trim();
+      if (!val) {
+        markFieldError(el, `${label} es obligatorio`);
+        errors.push(label);
+      } else if (email && !isValidEmail(val)) {
+        markFieldError(el, 'Ingresá un email válido');
+        errors.push(label);
+      }
+    });
+  }
+
+  // Validate selects
+  if (config.selects) {
+    config.selects.forEach(({ name, label }) => {
+      const el = panel.querySelector(`[name="${name}"]`);
+      if (!el) return;
+      if (!el.value || el.value === '') {
+        markFieldError(el, `${label} es obligatorio`);
+        errors.push(label);
+      }
+    });
+  }
+
+  // Validate checkbox groups
+  if (config.checkboxGroups) {
+    config.checkboxGroups.forEach(({ names, label, gridId }) => {
+      const checked = names.some(n => {
+        const cb = panel.querySelector(`[name="${n}"]`);
+        return cb && cb.checked;
+      });
+      if (!checked) {
+        const grid = gridId ? panel.querySelector(`#${gridId}`) : panel.querySelector('.option-grid');
+        if (grid) grid.classList.add('option-grid-error');
+        errors.push(label);
+      }
+    });
+  }
+
+  // Validate FAQ step
+  if (config.faqCheck) {
+    const faqP = panel.querySelector('[name="faq_p_1"]');
+    const faqR = panel.querySelector('[name="faq_r_1"]');
+    if (faqP && !faqP.value.trim()) {
+      markFieldError(faqP, 'Completá al menos la primera pregunta');
+      errors.push('Pregunta frecuente 1');
+    }
+    if (faqR && !faqR.value.trim()) {
+      markFieldError(faqR, 'Completá al menos la primera respuesta');
+      errors.push('Respuesta frecuente 1');
+    }
+  }
+
+  if (errors.length > 0) {
+    const banner = document.getElementById('error-banner-panel-' + stepIndex);
+    const text = document.getElementById('error-text-panel-' + stepIndex);
+    if (banner && text) {
+      text.textContent = errors.length === 1
+        ? `"${errors[0]}" es obligatorio.`
+        : `Completá los siguientes campos: ${errors.join(', ')}.`;
+      banner.classList.add('show');
+      banner.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+    return false;
+  } else {
+    const banner = document.getElementById('error-banner-panel-' + stepIndex);
+    if (banner) banner.classList.remove('show');
+    return true;
+  }
+}
+
+function markFieldError(el, msg) {
+  const fieldDiv = el.closest('.field') || el.parentElement;
+  fieldDiv.classList.add('field-error');
+  const errEl = document.createElement('div');
+  errEl.className = 'field-error-msg';
+  errEl.innerHTML = '⚠ ' + msg;
+  el.after(errEl);
+}
+
+function isValidEmail(v) {
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);
+}
 
 function goTo(n) {
   panels[current].classList.remove('active');
@@ -1288,10 +1505,8 @@ function goTo(n) {
   }
   current = n;
   panels[current].classList.add('active');
-  stepItems[current].classList.add('done'); // will override below
   stepItems[current].classList.remove('done');
   stepItems[current].classList.add('active');
-  // Update connectors
   connectors.forEach((c, i) => {
     c.classList.toggle('done', i < current);
   });
@@ -1317,9 +1532,13 @@ function updateNav() {
 
 btnNext.addEventListener('click', () => {
   if (current < TOTAL - 1) {
-    goTo(current + 1);
+    if (validateStep(current)) {
+      goTo(current + 1);
+    }
   } else {
-    submitForm();
+    if (validateStep(current)) {
+      submitForm();
+    }
   }
 });
 
@@ -1327,7 +1546,6 @@ btnBack.addEventListener('click', () => {
   if (current > 0) goTo(current - 1);
 });
 
-// Click on stepper
 stepItems.forEach((item, i) => {
   item.addEventListener('click', () => {
     if (i <= current || item.classList.contains('done')) goTo(i);
@@ -1352,21 +1570,66 @@ document.getElementById('add-faq').addEventListener('click', () => {
   container.appendChild(div);
 });
 
-function submitForm() {
+// ===== SUBMIT + EMAIL (Formspree) =====
+async function submitForm() {
+  const btn = document.getElementById('btn-next');
+  btn.classList.add('loading');
+  btn.textContent = 'Enviando...';
+
   // Collect all data
   const data = {};
   document.querySelectorAll('input, select, textarea').forEach(el => {
     if (!el.name) return;
+    if (el.type === 'file') return;
     if (el.type === 'checkbox' || el.type === 'radio') {
       if (el.checked) data[el.name] = el.value || 'sí';
     } else {
-      if (el.value && el.value.trim()) data[el.name] = el.value;
+      if (el.value && el.value.trim()) data[el.name] = el.value.trim();
     }
   });
-  console.log('=== DATOS CHATBOT ONBOARDING ===');
-  console.log(JSON.stringify(data, null, 2));
 
-  // Show success
+  // Format as readable email body
+  const emailData = {
+    _subject: `Nuevo onboarding chatbot: ${data.empresa_nombre || 'Sin nombre'}`,
+    _replyto: data.contacto_email || '',
+    ...data
+  };
+
+  if (FORMSPREE_ID === 'YOUR_FORMSPREE_ID') {
+    // Demo mode: show success without sending
+    console.log('=== DATOS (modo demo - configurá FORMSPREE_ID) ===');
+    console.log(JSON.stringify(data, null, 2));
+    showSuccess();
+    return;
+  }
+
+  try {
+    const response = await fetch(`https://formspree.io/f/${FORMSPREE_ID}`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+      },
+      body: JSON.stringify(emailData)
+    });
+
+    if (response.ok) {
+      showSuccess();
+    } else {
+      btn.classList.remove('loading');
+      btn.textContent = '✓ Enviar formulario';
+      btn.className = 'btn-submit-final';
+      alert('Hubo un error al enviar. Por favor intentá de nuevo.');
+    }
+  } catch (err) {
+    btn.classList.remove('loading');
+    btn.textContent = '✓ Enviar formulario';
+    btn.className = 'btn-submit-final';
+    alert('Error de conexión. Verificá tu internet e intentá de nuevo.');
+  }
+}
+
+function showSuccess() {
   document.getElementById('wizard-body').style.display = 'none';
   document.getElementById('bottom-nav').style.display = 'none';
   document.querySelector('.stepper-wrap').style.display = 'none';
