@@ -1645,8 +1645,7 @@ async function submitForm() {
       delete rawData[`faq_r_${i}`];
     }
   }
-  if (faqs.length > 0) rawData['_faqs'] = faqs.join('
-');
+  if (faqs.length > 0) rawData['_faqs'] = faqs.join(' | ');
 
   // Renombrar claves a etiquetas legibles
   const prettyData = {
